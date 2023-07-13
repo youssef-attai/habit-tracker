@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QApplication
 from constants import APP_NAME
+from screens.home_screen import HomeScreen
 from styles.stylesheet import styleSheet
 from window import Window
 from state import State
@@ -10,7 +11,7 @@ def main():
     app = QApplication([])
     app.setApplicationName(APP_NAME)
     app.setStyleSheet(styleSheet())
-    window = Window()
+    window = Window(HomeScreen())
     window.show()
     app.exec()
 
