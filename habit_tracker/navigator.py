@@ -1,12 +1,11 @@
-from PyQt6.QtWidgets import QMainWindow
+from core.base_window import BaseWindow
 
 
 class Navigator:
     instance: "Navigator" = None
 
     def __init__(self, window):
-        self.window: QMainWindow = window
-        self.stack = []
+        self.window: BaseWindow = window
 
     @staticmethod
     def init(window):
@@ -14,20 +13,12 @@ class Navigator:
             Navigator.instance = Navigator(window)
 
     @staticmethod
-    def update():
-        Navigator.instance.window.setCentralWidget(Navigator.instance.stack[-1])
-        Navigator.instance.stack[-1].show()
-
-    @staticmethod
     def pop():
-        if len(Navigator.instance.stack) > 1:
-            Navigator.instance.stack[-1].hide()
-            Navigator.instance.stack.pop()
-            Navigator.update()
-        # else:
-        #     Navigator.instance.window.close()
+        Navigator.instance.window.stacked_widget.removeWidget(
+            Navigator.instance.window.stacked_widget.currentWidget()
+        )
 
     @staticmethod
     def push(widget):
-        Navigator.instance.stack.append(widget)
-        Navigator.update()
+        Navigator.instance.window.stacked_widget.addWidget(widget)
+        Navigator.instance.window.stacked_widget.setCurrentWidget(widget)
