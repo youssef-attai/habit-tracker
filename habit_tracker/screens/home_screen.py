@@ -1,12 +1,12 @@
 from PyQt6.QtWidgets import QPushButton
 from PyQt6.QtCore import Qt
-from core.base_widget import BaseWidget
+from core.column_widget import ColumnWidget
 from navigator import Navigator
 from screens.create_habit_screen import CreateHabitScreen
 from widgets.habit_list_widget import HabitListWidget
 
 
-class HomeScreen(BaseWidget):
+class HomeScreen(ColumnWidget):
     def init(self):
         return super().init()
 

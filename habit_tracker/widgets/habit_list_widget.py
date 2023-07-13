@@ -1,10 +1,10 @@
 from PyQt6.QtCore import Qt
-from core.base_widget import BaseWidget
+from core.column_widget import ColumnWidget
 from widgets.habit_widget import HabitWidget
 from state import State
 
 
-class HabitListWidget(BaseWidget):
+class HabitListWidget(ColumnWidget):
     def init(self):
         super().init()
         State.instance.habit_controller.add_observer(self)

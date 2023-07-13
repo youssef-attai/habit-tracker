@@ -1,13 +1,13 @@
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QIntValidator
 from PyQt6.QtWidgets import QComboBox, QLineEdit, QPushButton, QTextEdit
-from core.base_widget import BaseWidget
+from core.row_widget import RowWidget
 from models.habit_model import HabitModel
 from state import State
 from navigator import Navigator
 
 
-class CreateHabitScreen(BaseWidget):
+class CreateHabitScreen(ColumnWidget):
     def init(self):
         return super().init()
 
