@@ -16,7 +16,11 @@ class Logger:
             print("\033[0m")
 
     @staticmethod
-    def e(msg):
+    def e(type, value, traceback):
+        file = traceback.tb_frame.f_code.co_filename
+        line = traceback.tb_lineno
+        msg = f"({type.__name__}) {value}\n"
+        msg += f"at {file}:{line}"
         if DEBUG:
             print("\033[91m", end="")
             print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}", end="")
