@@ -1,5 +1,5 @@
 from core.change_notifier import ChangeNotifier
-from habit_tracker.models.habit_model import HabitModel
+from models.habit_model import HabitModel
 from repositories.habit_repository.base import HabitRepository
 from utils import Logger
 
