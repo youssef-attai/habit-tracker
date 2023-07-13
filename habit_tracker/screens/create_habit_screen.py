@@ -1,6 +1,12 @@
+from PyQt6.QtWidgets import (
+    QComboBox,
+    QLineEdit,
+    QPushButton,
+    QTextEdit,
+)
 from PyQt6.QtCore import Qt
-from PyQt6.QtGui import QIntValidator
-from PyQt6.QtWidgets import QComboBox, QLineEdit, QPushButton, QTextEdit
+from PyQt6.QtGui import QIntValidator, QKeySequence, QShortcut
+from core.column_widget import ColumnWidget
 from core.row_widget import RowWidget
 from models.habit_model import HabitModel
 from state import State
@@ -8,11 +14,20 @@ from navigator import Navigator
 
 
 class CreateHabitScreen(ColumnWidget):
+    def __init__(self, existing_habit: HabitModel = None) -> None:
+        self.existing_habit = existing_habit
+        super().__init__()
+
     def init(self):
-        return super().init()
+        super().init()
+        # Create a QShortcut object with ESC as the key sequence
+        shortcut = QShortcut(QKeySequence(Qt.Key.Key_Escape), self)
+        # Connect the shortcut to a slot
+        shortcut.activated.connect(self._cancel)
 
     def build(self):
         super().build()
+
         self.layout().setAlignment(Qt.AlignmentFlag.AlignTop)
 
         self.title = QLineEdit()
@@ -32,24 +47,61 @@ class CreateHabitScreen(ColumnWidget):
         self.repeat.addItems(["Daily", "Weekly", "Monthly"])
         self.layout().addWidget(self.repeat)
 
-        self.add_button = QPushButton("Add")
-        self.add_button.clicked.connect(self.on_add_button_clicked)
-        self.layout().addWidget(self.add_button)
+        if self.existing_habit is not None:
+            self.title.setText(self.existing_habit.title)
+            self.description.setText(self.existing_habit.description)
+            self.goal.setText(str(self.existing_habit.goal))
+            self.repeat.setCurrentText(self.existing_habit.repeat)
 
-        self.back_button = QPushButton("Back")
-        self.back_button.clicked.connect(self.on_back_button_clicked)
-        self.layout().addWidget(self.back_button)
+        if self.existing_habit is not None:
+            self.main_action_button = QPushButton("Update")
+            self.main_action_button.clicked.connect(self._update_habit)
+        else:
+            self.main_action_button = QPushButton("Add")
+            self.main_action_button.clicked.connect(self._add_new_habit)
 
-    def on_add_button_clicked(self):
-        State.instance.habit_controller.create_habit(
-            HabitModel(
-                self.title.text(),
-                self.description.toPlainText(),
-                int(self.goal.text()),
-                self.repeat.currentText(),
-            )
+        self.buttons_row = RowWidget()
+
+        self.buttons_row.layout().addWidget(self.main_action_button)
+
+        self.cancel_button = QPushButton("Cancel")
+        self.cancel_button.clicked.connect(self._cancel)
+        self.buttons_row.layout().addWidget(self.cancel_button)
+
+        self.layout().addWidget(self.buttons_row)
+
+    def _update_habit(self):
+        title = self.title.text()
+        description = self.description.toPlainText()
+        goal = int(self.goal.text())
+        repeat = self.repeat.currentText()
+
+        State.instance.habit_controller.update_habit(
+            self.existing_habit.id,
+            {
+                "title": title,
+                "description": description,
+                "goal": goal,
+                "repeat": repeat,
+            },
         )
         Navigator.instance.pop()
 
-    def on_back_button_clicked(self):
+    def _add_new_habit(self):
+        title = self.title.text()
+        description = self.description.toPlainText()
+        goal = int(self.goal.text())
+        repeat = self.repeat.currentText()
+
+        State.instance.habit_controller.create_habit(
+            {
+                "title": title,
+                "description": description,
+                "goal": goal,
+                "repeat": repeat,
+            }
+        )
+        Navigator.instance.pop()
+
+    def _cancel(self):
         Navigator.instance.pop()
