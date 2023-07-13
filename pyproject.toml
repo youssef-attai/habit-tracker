@@ -10,6 +10,8 @@ packages = [{include = "habit_tracker"}]
 python = "^3.11"
 pyqt6 = "^6.5.1"
 
+[tool.mypy]
+mypy_path = "stubs/habit_tracker"
 
 [build-system]
 requires = ["poetry-core"]
