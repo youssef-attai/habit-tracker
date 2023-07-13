@@ -1,12 +1,10 @@
-from PyQt6.QtWidgets import QMainWindow
-
-from constants import APP_NAME
-from navigator import Navigator
+from PyQt6.QtWidgets import QMainWindow, QStackedWidget
 
 
 class BaseWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, window_title: str):
         super().__init__()
-        self.setWindowTitle(APP_NAME)
+        self.setWindowTitle(window_title)
 
-        Navigator.init(self)
+        self.stacked_widget = QStackedWidget()
+        self.setCentralWidget(self.stacked_widget)
