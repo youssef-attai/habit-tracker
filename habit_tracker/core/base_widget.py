@@ -1,16 +1,16 @@
-from PyQt6.QtWidgets import QVBoxLayout, QWidget, QStyleOption, QStyle
+from PyQt6.QtWidgets import QWidget, QStyleOption, QStyle
 from PyQt6.QtGui import QPainter
 
-from utils import Logger
+# from utils import Logger
 
 
 class BaseWidget(QWidget):
-    def __init__(self):
+    def __init__(self, before_init=lambda: None, before_build=lambda: None):
         super().__init__()
-        Logger.i(f"Constructing {self.__class__.__name__}")
-        self.setProperty("class", self.__class__.__name__.lower())
-        self.setLayout(QVBoxLayout())
+        # self.setProperty("class", self.__class__.__name__.lower())
+        before_init()
         self.init()
+        before_build()
         self.build()
 
     def paintEvent(self, evt):
@@ -25,10 +25,11 @@ class BaseWidget(QWidget):
         )
 
     def init(self):
-        Logger.i(f"Initializing {self.__class__.__name__}")
+        # Logger.i(f"Initializing {self.__class__.__name__}")
+        pass
 
     def build(self):
-        Logger.i(f"Building {self.__class__.__name__}")
+        # Logger.i(f"Building {self.__class__.__name__}")
         if self.layout() is not None:
             while self.layout().count():
                 child = self.layout().takeAt(0)
