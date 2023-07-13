@@ -1,18 +1,17 @@
-from schemas.habit_schema import HabitSchema
-
-
 class HabitModel:
-    def __init__(self, name, description, goal, repeat):
-        self.name = name
+    def __init__(self, id, title, description, goal, repeat):
+        self.id = id
+        self.title = title
         self.description = description
         self.goal = goal
         self.repeat = repeat
 
     @staticmethod
-    def from_schema(schema: HabitSchema):
+    def from_json(json: dict) -> "HabitModel":
         return HabitModel(
-            schema.name,
-            schema.description,
-            schema.goal,
-            schema.repeat,
+            id=json["id"],
+            title=json["title"],
+            description=json["description"],
+            goal=json["goal"],
+            repeat=json["repeat"],
         )
