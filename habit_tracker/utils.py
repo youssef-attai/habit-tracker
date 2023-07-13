@@ -25,3 +25,10 @@ class Logger:
             print("\033[91m", end="")
             print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {msg}", end="")
             print("\033[0m")
+
+
+def class_name_to_css_class(class_name):
+    # CamelCase -> camel-case
+    return "".join(["-" + c.lower() if c.isupper() else c for c in class_name]).lstrip(
+        "-"
+    )
