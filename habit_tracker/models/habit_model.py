@@ -1,17 +1,18 @@
 from schemas.habit_schema import HabitSchema
-from utils import Logger
 
 
 class HabitModel:
-    def __init__(self, name):
-        Logger.i(f"Constructing HabitModel(name={name})")
-
+    def __init__(self, name, description, goal, repeat):
         self.name = name
+        self.description = description
+        self.goal = goal
+        self.repeat = repeat
 
     @staticmethod
     def from_schema(schema: HabitSchema):
-        Logger.i(f"Constructing HabitModel from schema {schema}")
-
         return HabitModel(
             schema.name,
+            schema.description,
+            schema.goal,
+            schema.repeat,
         )
