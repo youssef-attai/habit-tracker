@@ -13,9 +13,11 @@ class InMemoryHabitRepository(HabitRepository):
         self.__last_id += 1
         return self.__last_id
 
-    def add(self, name: str) -> None:
-        super().add(name)
-        self.collection.append(HabitSchema(self.__next_id(), name))
+    def add(self, habit: HabitModel) -> None:
+        super().add(habit)
+        self.collection.append(
+            HabitSchema.from_model(self.__next_id(), habit)
+        )
 
     def delete(self, habit_id) -> None:
         super().delete(habit_id)
