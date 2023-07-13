@@ -1,11 +1,14 @@
-from utils import Logger
-
-
-def styleSheet():
-    Logger.i("Loading stylesheet")
-    return """
+styleSheet = """
 .window {
     background-color: #ff0000;
+}
+
+.homescreen {
+    background-color: #0000ff;
+}
+
+.createhabitscreen {
+    background-color: #ffff00;
 }
 
 .habitwidget {
