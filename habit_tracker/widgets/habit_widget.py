@@ -4,8 +4,10 @@ from core.base_widget import BaseWidget
 
 class HabitWidget(BaseWidget):
     def __init__(self, habit):
-        super().__init__()
         self.habit = habit
+        super().__init__()
 
-        self.label = QLabel(habit.name)
+    def build(self):
+        super().build()
+        self.label = QLabel(self.habit.name)
         self.layout().addWidget(self.label)
