@@ -1,13 +1,15 @@
 from core.change_notifier import ChangeNotifier
+from habit_tracker.models.habit_model import HabitModel
+from repositories.habit_repository.base import HabitRepository
 from utils import Logger
 
 
 class HabitController(ChangeNotifier):
-    def __init__(self, habit_repository):
+    def __init__(self, habit_repository: HabitRepository):
         super().__init__()
         Logger.i("Constructing HabitController")
-        self.habit_repository = habit_repository
-        self.habits = []
+        self.habit_repository: HabitRepository = habit_repository
+        self.habits: list[HabitModel] = []
 
     def load_habits(self):
         Logger.i("Loading habits")

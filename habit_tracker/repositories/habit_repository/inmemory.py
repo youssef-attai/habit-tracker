@@ -1,5 +1,4 @@
 from models.habit_model import HabitModel
-from utils import Logger
 from repositories.habit_repository import HabitRepository
 from schemas.habit_schema import HabitSchema
 
@@ -11,7 +10,6 @@ class InMemoryHabitRepository(HabitRepository):
         self.collection: list[HabitSchema] = []
 
     def __next_id(self) -> int:
-        Logger.i("Generating next id")
         self.__last_id += 1
         return self.__last_id
 
