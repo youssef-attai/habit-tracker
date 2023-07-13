@@ -1,41 +1,42 @@
+from models.habit_model import HabitModel
 from utils import Logger
 from repositories.habit_repository import HabitRepository
-from models.habit_model import HabitModel
+from schemas.habit_schema import HabitSchema
 
 
 class InMemoryHabitRepository(HabitRepository):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.__last_id = 0
-        self.collection = []
+        self.__last_id: int = 0
+        self.collection: list[HabitSchema] = []
 
-    def __next_id(self):
+    def __next_id(self) -> int:
         Logger.i("Generating next id")
         self.__last_id += 1
         return self.__last_id
 
-    def add(self, name):
+    def add(self, name: str) -> None:
         super().add(name)
-        self.collection.append(HabitModel(self.__next_id(), name))
+        self.collection.append(HabitSchema(self.__next_id(), name))
 
-    def delete(self, habit_id):
+    def delete(self, habit_id) -> None:
         super().delete(habit_id)
         self.collection = [i for i in self.collection if i.id != habit_id]
 
-    def update(self, habit):
+    def update(self, habit) -> None:
         super().update(habit)
         for i in range(len(self.collection)):
             if self.collection[i].id == habit.id:
                 self.collection[i] = habit
                 break
 
-    def find(self, habit_id):
+    def find(self, habit_id) -> HabitModel | None:
         super().find(habit_id)
         for habit in self.collection:
             if habit.id == habit_id:
-                return habit
+                return HabitModel.from_schema(habit)
         return None
 
-    def find_all(self):
+    def find_all(self) -> list[HabitModel]:
         super().find_all()
-        return self.collection
+        return [HabitModel.from_schema(habit) for habit in self.collection]
