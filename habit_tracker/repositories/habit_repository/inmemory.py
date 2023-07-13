@@ -3,15 +3,11 @@ from repositories.habit_repository import HabitRepository
 from models.habit_model import HabitModel
 
 
-class DummyHabitRepository(HabitRepository):
+class InMemoryHabitRepository(HabitRepository):
     def __init__(self):
         super().__init__()
         self.__last_id = 0
-        self.collection = [
-            HabitModel(1, "Read"),
-            HabitModel(2, "Exercise"),
-            HabitModel(3, "Meditate"),
-        ]
+        self.collection = []
 
     def __next_id(self):
         Logger.i("Generating next id")
